@@ -77,7 +77,10 @@ a {
 }
 
 /* ── 3. CARDS — border + layered shadow + hover lift ───────────── */
-.widget,
+/* :not(.cdx-block) — Frappe's workspace editor tags every content block,
+   including plain text paragraphs, with a bare .widget class; without this
+   exclusion a one-line text label gets card border/shadow treatment too. */
+.widget:not(.cdx-block),
 .frappe-card {
   border: 1px solid var(--st-card-border);
   box-shadow: var(--st-shadow-sm);

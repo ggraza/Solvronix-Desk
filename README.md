@@ -68,6 +68,9 @@ You set one brand color. The system automatically generates your complete color 
 ### Icon Rail Sidebar
 A slim, always-visible app-icon column sits beside the classic workspace list — one compact tile per installed app (ERPNext, CRM, Frappe HR, and so on), each using that app's own icon in a theme-colored tile that follows your brand/accent color automatically. New apps and workspaces appear on the rail automatically. Collapses to icon-only via its own toggle, independent of the classic sidebar. Switch back to the classic single-column Tree layout at any time from Theme Studio → Navbar & Sidebar → Sidebar Layout.
 
+### Slide-In Row Editor
+Child table rows (Sales Invoice Items, and any other grid) open in a full-height panel that slides in from the right instead of expanding inline in the table — header stays pinned with row actions (Duplicate, Move, Insert Above/Below, Delete), footer stays pinned with keyboard shortcut hints. Closes via the dimming backdrop, `Esc`, or Frappe's own controls; row switching and `Ctrl+↑`/`Ctrl+↓` navigation work exactly as before. Toggle it off in Theme Studio → Layout to fall back to the classic inline row editor.
+
 ### Dark Mode — Light / Dark / Auto
 One click cycles between light, dark, and auto. Auto follows your operating system theme and switches live when the OS does. Both modes respect your brand colors. Works on every page.
 

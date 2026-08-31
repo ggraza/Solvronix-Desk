@@ -123,6 +123,7 @@ solvronix_desk.theme_studio_sections = [
 			["header_height", "Toolbar height", "range", 32, 64, "px"],
 			["sticky_navbar", "Sticky top toolbar", "check"], ["sticky_form_toolbar", "Sticky form toolbar", "check"],
 			["compact_forms", "Compact forms", "check"],
+			["grid_row_slide_panel", "Slide-in child table row editor", "check"],
 		],
 	},
 	{

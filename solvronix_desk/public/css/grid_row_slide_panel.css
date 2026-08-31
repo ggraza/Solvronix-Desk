@@ -1,0 +1,95 @@
+/* =============================================================================
+   Solvronix Desk — Slide-in child table row editor (Task 3)
+   Frappe 16 already opens a grid row's edit form inline in the table
+   (GridRowForm's .form-in-grid, toggled via plain display:block/none — there
+   is no modal to intercept, and GridRow/GridRowForm aren't exposed as
+   frappe.ui.form.GridRow anywhere, so they can't be monkey-patched from here).
+   Rather than relocate the DOM node or patch inaccessible classes, this lets
+   Frappe's own display toggle drive a native slide-in/out animation via
+   @starting-style + transition-behavior: allow-discrete — CSS handles both
+   open and close directions, so all of Frappe's own state (row toggling,
+   keyboard nav, switching rows) keeps working exactly as built.
+   Gated behind body.st-grid-slide-panel-enabled, set by
+   grid_row_slide_panel.js from the Theme Studio toggle — absent, this file
+   has no effect and Frappe's default inline behavior is untouched.
+   ============================================================================= */
+
+body.st-grid-slide-panel-enabled .form-in-grid {
+  position: fixed !important;
+  top: var(--st-header-height, 0) !important;
+  right: 0 !important;
+  left: auto !important;
+  bottom: 0 !important;
+  width: min(480px, 100vw) !important;
+  height: auto !important;
+  max-width: 100vw;
+  margin: 0 !important;
+  background: var(--st-card-bg) !important;
+  border: none !important;
+  border-left: 1px solid var(--st-border) !important;
+  box-shadow: -8px 0 24px rgba(0, 0, 0, 0.18) !important;
+  z-index: 1050;
+  overflow-y: auto;
+  transform: translateX(0);
+  transition:
+    transform var(--st-transition),
+    display var(--st-transition) allow-discrete,
+    overlay var(--st-transition) allow-discrete;
+}
+
+@starting-style {
+  body.st-grid-slide-panel-enabled .form-in-grid {
+    transform: translateX(100%);
+  }
+}
+
+/* Header/footer stay pinned, body scrolls — same structure Frappe already
+   builds (.grid-form-heading / .grid-form-body / .grid-footer-toolbar),
+   just re-laid-out as a proper panel instead of an inline block. */
+body.st-grid-slide-panel-enabled .form-in-grid .grid-form-heading {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--st-card-bg);
+  border-bottom: 1px solid var(--st-border);
+  padding: 12px 16px;
+}
+body.st-grid-slide-panel-enabled .form-in-grid .grid-form-body {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100% - 48px);
+}
+body.st-grid-slide-panel-enabled .form-in-grid .form-area {
+  flex: 1 1 auto;
+  padding: 4px 16px;
+}
+body.st-grid-slide-panel-enabled .form-in-grid .grid-footer-toolbar {
+  position: sticky;
+  bottom: 0;
+  background: var(--st-card-bg);
+  border-top: 1px solid var(--st-border);
+  padding: 10px 16px;
+  margin-top: auto;
+}
+
+/* Backdrop — a single shared element toggled by grid_row_slide_panel.js
+   whenever any .form-in-grid panel is open; click-to-close is wired there. */
+.st-grid-slide-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 1040;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--st-transition);
+}
+.st-grid-slide-backdrop.st-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@media (max-width: 640px) {
+  body.st-grid-slide-panel-enabled .form-in-grid {
+    width: 100vw !important;
+  }
+}

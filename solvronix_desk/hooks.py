@@ -7,7 +7,7 @@ app_email = "sales@solvronix.com"
 app_license = "MIT"
 app_color = "#E8610A"
 app_icon = "octicon octicon-paintcan"
-app_version = "2.1.2"
+app_version = "2.1.3"
 
 required_apps = []
 
@@ -18,17 +18,18 @@ web_include_js = ["/assets/solvronix_desk/js/login_theme.js?v=8"]
 # ── AUTHENTICATED DESK ASSETS ──────────────────────────────────────────────────
 # Query versions are bumped whenever an asset changes to invalidate browser cache.
 app_include_css = [
-    "/assets/solvronix_desk/css/solvronix_desk.css?v=54",
+    "/assets/solvronix_desk/css/solvronix_desk.css?v=58",
     "/assets/solvronix_desk/css/sidebar.css?v=31",
     "/assets/solvronix_desk/css/command_palette.css?v=4",
     "/assets/solvronix_desk/css/smart_home.css?v=7",
     "/assets/solvronix_desk/css/progressive_forms.css?v=3",
     "/assets/solvronix_desk/css/notification_center.css?v=3",
-    "/assets/solvronix_desk/css/polish.css?v=3",
+    "/assets/solvronix_desk/css/polish.css?v=4",
     "/assets/solvronix_desk/css/dark_mode.css?v=15",
     "/assets/solvronix_desk/css/module_cards.css?v=2",
     "/assets/solvronix_desk/css/density.css?v=2",
     "/assets/solvronix_desk/css/theme_studio.css?v=19",
+    "/assets/solvronix_desk/css/grid_row_slide_panel.css?v=1",
 ]
 app_include_js = [
     "/assets/solvronix_desk/js/dark_mode.js?v=12",
@@ -41,6 +42,7 @@ app_include_js = [
     "/assets/solvronix_desk/js/module_cards.js?v=10",
     "/assets/solvronix_desk/js/theme_runtime.js?v=8",
     "/assets/solvronix_desk/js/chart_runtime.js?v=4",
+    "/assets/solvronix_desk/js/grid_row_slide_panel.js?v=1",
 ]
 
 # ── BOOT / INSTALL / DOCUMENT LIFECYCLE HOOKS ──────────────────────────────────
