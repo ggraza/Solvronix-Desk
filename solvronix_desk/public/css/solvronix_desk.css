@@ -154,7 +154,17 @@ textarea,
   --st-text-muted:    #94A3B8;
   --st-bg:            var(--st-page-bg);  /* backwards-compat alias */
   /* Sidebar vars restored to dark-on-brand for dark mode */
-  --st-sidebar-active:      color-mix(in srgb, var(--st-accent) 15%, transparent);
+  /* Solid pill, matching light mode's treatment (var(--st-sidebar-active): var(--st-accent))
+     — a 15%-opacity tint over the already brand-colored dark sidebar was nearly invisible,
+     leaving only the 3px left border to show which item is active.
+     Darkened via relative-color lightness scaling (hue/saturation untouched) rather than
+     color-mix() toward black — mixing toward black in sRGB compresses saturation hardest on
+     colors that start light (e.g. a pale custom accent loses ~38 points of saturation), which
+     reads as muddy rather than a clean darker shade of the same color.
+     WCAG-verified with the runtime's auto-picked --st-sidebar-active-text: stays >=4.5:1 (worst
+     case 7.2:1) across default accent, near-black, pure-saturated, desaturated, and pale/light
+     custom accents (same ratio formula as theme_studio.js's _ratio()/_contrast()). */
+  --st-sidebar-active:      hsl(from var(--st-accent) h s calc(l * 0.55));
   --st-sidebar-hover:       rgba(255, 255, 255, 0.10);
   --st-sidebar-text:        #FFFFFF;
   --st-sidebar-text-muted:  rgba(255, 255, 255, 0.55);
@@ -702,25 +712,99 @@ input[type="checkbox"]:checked {
 
 /* ── WORKSPACE / HOME CARDS ─────────────────────── */
 
-/* Cards — layered shadow, no top stripe */
+/* Frappe's workspace editor tags every content block (plain text paragraphs,
+   headers, lists — not just real ShortcutWidget/ChartWidget instances) with a
+   bare .widget class for spacing. Frappe core's own .widget rule (no
+   !important) unconditionally paints background-color/border-radius onto
+   that class, so a one-line text label like a bold "SHORTCUTS" heading was
+   rendering as its own stray white/dark card. Excluding .cdx-block from the
+   theme's OWN card rules (below, and in polish.css/theme_engine.py) only
+   stops the theme from reinforcing that — core's un-important rule still
+   shows through underneath, so it needs an explicit reset here too. */
+.widget.cdx-block {
+  background: transparent !important;
+  border-radius: 0 !important;
+  padding: 4px 0 !important;
+}
+
+/* Cards — stronger separation from the page canvas than a bare shadow-md gave;
+   border now uses the theme's real card-border token instead of a near-invisible
+   flat rgba, so cards read as distinct surfaces at rest, not just on hover. */
 .desk-card,
 .widget.onboarding-widget-box,
 .widget.links-widget-box,
 .widget.shortcut-widget-box {
+  position: relative;
   border-top: none !important;
   border-radius: var(--st-radius-lg) !important;
-  box-shadow: var(--st-shadow-md) !important;
-  border: 1px solid rgba(0,0,0,0.06) !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.08) !important;
+  border: 1px solid var(--st-card-border) !important;
   transition: all var(--st-transition) !important;
   overflow: hidden;
 }
 .desk-card:hover,
-.widget:hover {
+/* :not(.cdx-block) — Frappe's workspace editor tags EVERY content block (plain
+   text paragraphs, not just real ShortcutWidget/ChartWidget instances) with a
+   bare .widget class for spacing; without this exclusion a one-line text
+   label like a bold "SHORTCUTS" heading gets the same hover lift as a card. */
+.widget:hover:not(.cdx-block) {
   box-shadow: var(--st-shadow-lg) !important;
   transform: translateY(-3px);
   border-color: var(--st-primary-light) !important;
 }
 .widget.shortcut-widget-box:hover .widget-head .widget-title {
+  color: var(--st-accent) !important;
+}
+
+/* Accent top stripe on hover — scoped to Shortcut/Links widgets only (not the
+   broad .widget selector) so Number Card/Chart widgets are untouched; mirrors
+   the App Grid's .st-ws-card::before treatment for one consistent card language. */
+.widget.shortcut-widget-box::before,
+.widget.links-widget-box::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--st-accent);
+  opacity: 0;
+  transition: opacity var(--st-transition);
+}
+.widget.shortcut-widget-box:hover::before,
+.widget.links-widget-box:hover::before {
+  opacity: 1;
+}
+
+/* Section group labels (SHORTCUTS / META / PORTAL, etc.) — a real header bar
+   (background fill, not just a hairline border) using the same shaded-bg
+   convention already used for list-view/datatable column headers, so the
+   label reads as a distinct section header instead of a barely-visible line. */
+.widget-group-head {
+  background: color-mix(in srgb, var(--st-page-bg) 92%, #000) !important;
+  border: 1px solid var(--st-border) !important;
+  border-radius: var(--st-radius-sm) !important;
+  padding: 9px 14px !important;
+  margin-bottom: 14px !important;
+}
+.widget-group-head .widget-group-title {
+  color: var(--st-text-muted) !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  margin-bottom: 0 !important;
+}
+
+/* Shortcut/Links widget count badge — accent tint instead of the flat neutral
+   gray Frappe falls back to when a workspace shortcut has no configured color.
+   Scoped to these two widget types so ordinary status pills elsewhere (list
+   views, kanban, etc.) keep their normal semantic gray meaning untouched. */
+.widget.shortcut-widget-box .indicator-pill.gray,
+.widget.shortcut-widget-box .indicator-pill.grey,
+.widget.links-widget-box .indicator-pill.gray,
+.widget.links-widget-box .indicator-pill.grey {
+  background: color-mix(in srgb, var(--st-accent) 12%, transparent) !important;
   color: var(--st-accent) !important;
 }
 

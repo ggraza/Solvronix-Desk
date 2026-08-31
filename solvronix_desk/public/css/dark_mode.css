@@ -267,7 +267,8 @@ html[data-theme="dark"] .datatable .dt-cell {
 
 html[data-theme="dark"] .datatable .dt-cell--header,
 html[data-theme="dark"] .list-row-head,
-html[data-theme="dark"] .dt-header {
+html[data-theme="dark"] .dt-header,
+html[data-theme="dark"] .widget-group-head {
   background-color: var(--st-input-bg) !important;
   border-color: rgba(255,255,255,0.08) !important;
 }

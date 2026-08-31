@@ -137,6 +137,7 @@ DEFAULT_CONFIG = {
     "sticky_navbar": True,
     "sticky_form_toolbar": True,
     "compact_forms": False,
+    "grid_row_slide_panel": True,
     # Accessibility
     "high_contrast": False,
     "large_text": False,
@@ -178,7 +179,7 @@ BOOL_FIELDS = {
     "sidebar_auto_collapse", "sticky_navbar", "sticky_form_toolbar",
     "compact_forms", "hide_powered", "high_contrast", "large_text",
     "enforce_wcag", "enable_custom_js", "enable_command_palette",
-    "enable_smart_home",
+    "enable_smart_home", "grid_row_slide_panel",
 }
 INT_RANGES = {
     "sidebar_width": (200, 360),
@@ -1178,7 +1179,7 @@ input[type="checkbox"],input[type="radio"],.switch input {{ accent-color: var(--
 .dropdown-menu,.frappe-menu,.awesomplete > ul {{ background: var(--st-dropdown-bg) !important; }}
 .form-control[readonly],.control-value.like-disabled-input {{ background: var(--st-readonly-bg) !important; }}
 .form-control:disabled,.btn:disabled,[aria-disabled="true"] {{ opacity: var(--st-disabled-opacity) !important; }}
-.frappe-card,.form-page,.widget,.desk-card,.number-card {{
+.frappe-card,.form-page,.widget:not(.cdx-block),.desk-card,.number-card {{
   background-color: var(--st-card-bg) !important; border-color: var(--st-card-border) !important;
   border-radius: var(--st-card-radius) !important; box-shadow: var(--st-shadow-md) !important;
 }}
@@ -1190,7 +1191,7 @@ input[type="checkbox"],input[type="radio"],.switch input {{ accent-color: var(--
   background-color: var(--st-table-header) !important; border-color: var(--st-report-grid) !important;
 }}
 .dt-cell,.grid-row .data-row .row,.report-view .datatable {{ border-color: var(--st-report-grid) !important; }}
-.workspace .widget,.shortcut-widget-box,.links-widget-box {{ background: var(--st-workspace-card) !important; }}
+.workspace .widget:not(.cdx-block),.shortcut-widget-box,.links-widget-box {{ background: var(--st-workspace-card) !important; }}
 .editor-js-container .ce-header,
 .editor-js-container .ce-header .h4,
 .editor-js-container .ce-header b {{
